@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yorumlar - GNC Mutfak</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <nav class="gezinti-cubugu">
+        <a href="index.html" class="marka-alani">
+            <img src="logo/gnc-logo.png" alt="GNC Mutfak Logo">
+            <span class="slogan">Anne Elinden, Ev Yemekleri</span>
+        </a>
+        <div class="hamburger-menu" id="hamburger-menu">
+            <i class="fas fa-bars"></i>
+        </div>
+        <ul class="gezinti-baglantilari" id="gezinti-baglantilari">
+            <li><a href="index.html">Anasayfa</a></li><b style="color: white;">| </b>
+            <li><a href="hakkimizda.html">Hakkımızda</a></li><b style="color: white;">| </b>
+            <li><a href="menu.html">Menü</a></li><b style="color: white;">| </b>
+            <li><a href="iletisim.html">İletişim</a></li><b style="color: white;">| </b>
+            <li><a href="yorumlar.html" class="aktif">Yorumlar</a></li>
+        </ul>
+        <button class="tema-dugme" id="tema-degistir" aria-label="Tema değiştir">
+            <i class="fas fa-moon"></i>
+        </button>
+    </nav>
+
+    <header class="kahraman-alan"
+        style="height: 28vh; min-height: 200px; background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.65)), url('https://lh3.googleusercontent.com/p/AF1QipNJ5Hs_Q0hiNd6bYXMqFnFbdf8K0NYRQSn1RIUb=s2048') center/cover;">
+        <div class="kahraman-icerik">
+            <h1>Yorumlar</h1>
+        </div>
+    </header>
+
+    <section class="bolum">
+        <div class="bolum-baslik">
+            <h2>Müşterilerimiz Ne Diyor?</h2>
+        </div>
+
+        <div class="yorumlar-izgara" id="yorumlarIzgara">
+        </div>
+
+        <!-- Yorum Formu -->
+        <div class="bolum-baslik" style="margin-top: 50px;">
+            <h2>Siz de yorum bırakın</h2>
+            <p style="font-size: 0.93rem;">Deneyiminizi paylaşın.</p>
+        </div>
+
+        <div class="yorum-form-kutu">
+            <form class="iletisim-formu" id="yorumFormu">
+                <div class="giris-grubu" style="text-align: center;">
+                    <label style="margin-bottom: 8px; display: block; font-size: 1rem;">Puanınız</label>
+                    <div class="yildiz-puan-girisi">
+                        <input type="radio" id="star5" name="rating" value="5" required>
+                        <label for="star5"><i class="fas fa-star"></i></label>
+                        <input type="radio" id="star4" name="rating" value="4">
+                        <label for="star4"><i class="fas fa-star"></i></label>
+                        <input type="radio" id="star3" name="rating" value="3">
+                        <label for="star3"><i class="fas fa-star"></i></label>
+                        <input type="radio" id="star2" name="rating" value="2">
+                        <label for="star2"><i class="fas fa-star"></i></label>
+                        <input type="radio" id="star1" name="rating" value="1">
+                        <label for="star1"><i class="fas fa-star"></i></label>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 8px;">
+                    <div class="giris-grubu">
+                        <label for="rev-name">Adınız</label>
+                        <input type="text" id="rev-name" placeholder="İsteğe bağlı">
+                    </div>
+                    <div class="giris-grubu">
+                        <label for="rev-email">E-posta (gizli kalır)</label>
+                        <input type="email" id="rev-email" placeholder="ornek@mail.com">
+                    </div>
+                </div>
+
+                <div class="giris-grubu" style="margin-top: 12px;">
+                    <label for="rev-text">Yorumunuz</label>
+                    <textarea id="rev-text" rows="3" placeholder="Ne düşünüyorsunuz?" required></textarea>
+                </div>
+
+                <button type="submit" class="dugme" style="margin-top: 16px; width: 100%;">Gönder</button>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <div class="altbilgi-icerik">
+            <div class="altbilgi-marka">
+                <img src="logo/gnc-logo.png" alt="GNC Mutfak" height="50">
+                <p>Değirmenköy, Silivri / İstanbul<br>Pzt–Cum 06:00–22:00 · Cts 07:00–20:00</p>
+            </div>
+            <div class="altbilgi-baglantilar">
+                <h4>Sayfalar</h4>
+                <ul>
+                    <li><a href="index.html">Anasayfa</a></li>
+                    <li><a href="hakkimizda.html">Hakkımızda</a></li>
+                    <li><a href="menu.html">Menü</a></li>
+                    <li><a href="iletisim.html">İletişim</a></li>
+                    <li><a href="yorumlar.html">Yorumlar</a></li>
+                </ul>
+            </div>
+            <div class="altbilgi-baglantilar">
+                <h4>Bize Ulaşın</h4>
+                <ul>
+                    <li><i class="fas fa-phone" style="color:#666; margin-right:6px;"></i> 0555 555 55 55</li>
+                    <li><a href="https://www.instagram.com/gnc.mutfak" target="_blank"><i class="fab fa-instagram"
+                                style="margin-right:6px;"></i>@gnc.mutfak</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="altbilgi-alt">&copy; 2025 GNC Mutfak. Bu site satış yapmaz, bilgi amaçlıdır.</div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

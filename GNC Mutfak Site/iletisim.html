@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>İletişim - GNC Mutfak</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <nav class="gezinti-cubugu">
+        <a href="index.html" class="marka-alani">
+            <img src="logo/gnc-logo.png" alt="GNC Mutfak Logo">
+            <span class="slogan">Anne Elinden, Ev Yemekleri</span>
+        </a>
+        <div class="hamburger-menu" id="hamburger-menu">
+            <i class="fas fa-bars"></i>
+        </div>
+        <ul class="gezinti-baglantilari" id="gezinti-baglantilari">
+            <li><a href="index.html">Anasayfa</a></li><b style="color: white;">| </b>
+            <li><a href="hakkimizda.html">Hakkımızda</a></li><b style="color: white;">| </b>
+            <li><a href="menu.html">Menü</a></li><b style="color: white;">| </b>
+            <li><a href="iletisim.html" class="aktif">İletişim</a></li><b style="color: white;">| </b>
+            <li><a href="yorumlar.html">Yorumlar</a></li>
+        </ul>
+        <button class="tema-dugme" id="tema-degistir" aria-label="Tema değiştir">
+            <i class="fas fa-moon"></i>
+        </button>
+    </nav>
+
+    <header class="kahraman-alan"
+        style="height: 28vh; min-height: 200px; background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.65)), url('https://lh3.googleusercontent.com/p/AF1QipNJ5Hs_Q0hiNd6bYXMqFnFbdf8K0NYRQSn1RIUb=s2048') center/cover;">
+        <div class="kahraman-icerik">
+            <h1>İletişim & Konum</h1>
+        </div>
+    </header>
+
+    <section class="bolum">
+        <div class="iletisim-kutu">
+            <div class="iletisim-bilgi">
+                <h2 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 8px;">Bize Ulaşın</h2>
+                <p style="color: var(--acik-yazi); margin-bottom: 20px; font-size: 0.93rem;">Toplu sipariş, pasta
+                    talebi veya herhangi bir soru için arayabilir ya da dükkanımıza gelebilirsiniz.</p>
+
+                <div class="bilgi-ogesi">
+                    <div class="bilgi-ikon"><i class="fas fa-map-marker-alt"></i></div>
+                    <div class="bilgi-icerik">
+                        <h4>Adres</h4>
+                        <p>Değirmenköy<br>Silivri / İstanbul</p>
+                    </div>
+                </div>
+
+                <div class="bilgi-ogesi">
+                    <div class="bilgi-ikon"><i class="fas fa-phone-alt"></i></div>
+                    <div class="bilgi-icerik">
+                        <h4>Telefon</h4>
+                        <p>0555 555 55 55</p>
+                    </div>
+                </div>
+
+                <div class="bilgi-ogesi">
+                    <div class="bilgi-ikon"><i class="fab fa-instagram"></i></div>
+                    <div class="bilgi-icerik">
+                        <h4>Instagram</h4>
+                        <p><a href="https://www.instagram.com/gnc.mutfak" target="_blank"
+                                style="color: var(--vurgu-renk); text-decoration: none;">@gnc.mutfak</a></p>
+                    </div>
+                </div>
+
+                <div class="bilgi-ogesi">
+                    <div class="bilgi-ikon"><i class="far fa-clock"></i></div>
+                    <div class="bilgi-icerik">
+                        <h4>Çalışma Saatleri</h4>
+                        <p>Pazartesi – Cuma: 06.00 – 22.00<br>Cumartesi: 07.00 – 20.00<br>Pazar: Kapalı</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="harita-kutu">
+                <iframe src="https://maps.google.com/maps?q=41.0979387,28.0128683&t=&z=17&ie=UTF8&iwloc=&output=embed"
+                    width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+        </div>
+
+        <div class="iletisim-kutu" style="margin-top: 40px;">
+            <div style="grid-column: 1 / -1;">
+                <h2 style="font-size: 1.5rem; font-weight: 600; text-align: center; margin-bottom: 8px;">Mesaj Gönderin
+                </h2>
+                <p style="text-align: center; color: var(--acik-yazi); margin-bottom: 25px; font-size: 0.93rem;">
+                    Formu doldurun, size dönüş yapalım.</p>
+                <form class="iletisim-formu" style="max-width: 700px; margin: 0 auto;"
+                    onsubmit="alert('Mesajınız gönderildi.');">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                        <div class="giris-grubu">
+                            <label for="name">Ad Soyad</label>
+                            <input type="text" id="name" placeholder="Adınız" required>
+                        </div>
+                        <div class="giris-grubu">
+                            <label for="email">E-posta</label>
+                            <input type="email" id="email" placeholder="ornek@mail.com" required>
+                        </div>
+                    </div>
+                    <div class="giris-grubu" style="margin-top: 12px;">
+                        <label for="subject">Konu</label>
+                        <input type="text" id="subject" placeholder="Ne hakkında?" required>
+                    </div>
+                    <div class="giris-grubu" style="margin-top: 12px;">
+                        <label for="message">Mesaj</label>
+                        <textarea id="message" rows="4" placeholder="Mesajınız..." required></textarea>
+                    </div>
+                    <button type="submit" class="dugme" style="margin-top: 16px; width: 100%;">Gönder</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="altbilgi-icerik">
+            <div class="altbilgi-marka">
+                <img src="logo/gnc-logo.png" alt="GNC Mutfak" height="50">
+                <p>Değirmenköy, Silivri / İstanbul<br>Pzt–Cum 06:00–22:00 · Cts 07:00–20:00</p>
+            </div>
+            <div class="altbilgi-baglantilar">
+                <h4>Sayfalar</h4>
+                <ul>
+                    <li><a href="index.html">Anasayfa</a></li>
+                    <li><a href="hakkimizda.html">Hakkımızda</a></li>
+                    <li><a href="menu.html">Menü</a></li>
+                    <li><a href="iletisim.html">İletişim</a></li>
+                    <li><a href="yorumlar.html">Yorumlar</a></li>
+                </ul>
+            </div>
+            <div class="altbilgi-baglantilar">
+                <h4>Bize Ulaşın</h4>
+                <ul>
+                    <li><i class="fas fa-phone" style="color:#666; margin-right:6px;"></i> 0555 555 55 55</li>
+                    <li><a href="https://www.instagram.com/gnc.mutfak" target="_blank"><i class="fab fa-instagram"
+                                style="margin-right:6px;"></i>@gnc.mutfak</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="altbilgi-alt">&copy; 2025 GNC Mutfak. Bu site satış yapmaz, bilgi amaçlıdır.</div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Masadan Sipariş - GNC Mutfak</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --arkaplan-renk: #f4f7f6;
+            --kart-arkaplan: #ffffff;
+            --kose-yariCap: 12px;
+            --kenarlik-renk: #e0e0e0;
+            --vurgu-renk: #2cbd58;
+            --koyu-yazi: #333333;
+            --acik-yazi: #666666;
+        }
+
+        body {
+            background-color: var(--arkaplan-renk);
+            font-family: sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .qr-kutu {
+            max-width: 500px;
+            margin: 40px auto;
+            padding: 30px;
+            background: var(--kart-arkaplan);
+            border-radius: var(--kose-yariCap);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .giris-grubu {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 15px;
+        }
+
+        .giris-grubu label {
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: var(--koyu-yazi);
+        }
+
+        .giris-grubu input {
+            padding: 10px;
+            border: 1px solid var(--kenarlik-renk);
+            border-radius: 6px;
+            font-size: 1rem;
+        }
+
+        .dugme {
+            background-color: var(--vurgu-renk);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: opacity 0.3s;
+        }
+
+        .dugme:hover {
+            opacity: 0.9;
+        }
+
+        .siparis-oge {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid var(--kenarlik-renk);
+            border-radius: 8px;
+            transition: border-color 0.3s;
+        }
+
+        .siparis-oge:hover {
+            border-color: var(--vurgu-renk);
+        }
+
+        .siparis-oge img {
+            width: 70px;
+            height: 70px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-right: 15px;
+        }
+
+        .siparis-oge-bilgi {
+            flex: 1;
+        }
+
+        .siparis-oge-bilgi h4 {
+            margin: 0;
+            color: var(--koyu-yazi);
+            font-size: 1.05rem;
+        }
+
+        .siparis-oge-bilgi p {
+            margin: 5px 0 0 0;
+            color: var(--acik-yazi);
+            font-size: 0.85rem;
+        }
+
+        #siparisEkrani {
+            display: none;
+        }
+
+        .sepet-kutu {
+            position: sticky;
+            bottom: 20px;
+            background-color: #2cbd58;
+            color: #ffffff;
+            padding: 15px 20px;
+            border-radius: var(--kose-yariCap);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 30px auto 0 auto;
+            max-width: 800px;
+            z-index: 100;
+        }
+
+        .sepet-kutu.gizli {
+            display: none;
+        }
+
+        .sepet-baslik {
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: #ffffff;
+        }
+
+        .sepet-gonder-dugme {
+            background: #ffffff;
+            color: #2cbd58;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s;
+        }
+
+        .sepet-gonder-dugme:active {
+            transform: scale(0.96);
+        }
+
+        .miktar-kontrol {
+            display: flex;
+            align-items: center;
+            background: #f8f9fa;
+            border-radius: 6px;
+            overflow: hidden;
+            border: 1px solid #dee2e6;
+        }
+
+        .miktar-buton {
+            background: #ffffff;
+            border: none;
+            width: 36px;
+            height: 36px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            color: var(--koyu-yazi);
+            font-weight: bold;
+            transition: 0.2s;
+        }
+
+        .miktar-buton:hover {
+            background: #e9ecef;
+        }
+
+        .miktar-deger {
+            width: 36px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 1rem;
+            color: var(--koyu-yazi);
+            user-select: none;
+        }
+
+        .kategori-kart {
+            background: var(--kart-arkaplan);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .kategori-baslik {
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--kenarlik-renk);
+            padding-bottom: 10px;
+            color: var(--koyu-yazi);
+        }
+    </style>
+</head>
+
+<body>
+    <nav style="display:flex; justify-content: center; padding: 15px 0; background-color: black;">
+        <div>
+            <img src="logo/gnc-logo.png" alt="GNC Mutfak Logo" style="height: 60px;"
+                onerror="this.src='https://via.placeholder.com/150x60?text=GNC+Mutfak'">
+        </div>
+    </nav>
+
+    <section id="girisEkrani" style="padding-top: 40px; min-height: 80vh;">
+        <div class="qr-kutu">
+            <h2 style="text-align: center; margin-bottom: 20px; color: var(--koyu-yazi); font-size: 1.8rem;">Masadan
+                Sipariş</h2>
+            <p
+                style="text-align: center; color: var(--acik-yazi); margin-bottom: 30px; font-size: 1rem; line-height: 1.5;">
+                Hoş geldiniz!<br>Sipariş verebilmek için lütfen bilgilerinizi giriniz.
+            </p>
+
+            <form id="qrGirisFormu">
+                <div class="giris-grubu">
+                    <label for="musteriAd">Adınız Soyadınız</label>
+                    <input type="text" id="musteriAd" placeholder="Örn: Ahmet Yılmaz" required>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px;">
+                    <div class="giris-grubu">
+                        <label for="masaNo">Masa Numarası</label>
+                        <input type="number" id="masaNo" placeholder="Örn: 5" required min="1" max="50">
+                    </div>
+                    <div class="giris-grubu">
+                        <label for="kisiSayisi">Kişi Sayısı</label>
+                        <input type="number" id="kisiSayisi" placeholder="Örn: 2" required min="1" max="20">
+                    </div>
+                </div>
+                <button type="submit" class="dugme"
+                    style="width: 100%; margin-top: 30px; padding: 14px; font-size: 1.1rem;">
+                    <i class="fas fa-utensils" style="margin-right: 8px;"></i> Menüyü Gör
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <section id="siparisEkrani" style="padding-top: 30px;">
+        <div style="max-width: 800px; margin: 0 auto 30px auto; text-align: center;">
+            <h2 style="font-size: 2rem; color: var(--koyu-yazi); margin-bottom: 10px;">Günün Menüsü</h2>
+            <p id="kullaniciBilgiAlani" style="font-weight: 600; font-size: 1.1rem; color: var(--vurgu-renk);"></p>
+        </div>
+
+        <div class="gunluk-menu-kutu"
+            style="max-width: 800px; margin: 0 auto; background: transparent; box-shadow: none; padding: 0;">
+            <div id="qrMenuIcerik"></div>
+        </div>
+
+        <div id="sepetAlani" class="sepet-kutu gizli">
+            <div>
+                <span class="sepet-baslik">
+                    <i class="fas fa-shopping-basket" style="margin-right: 8px;"></i>
+                    Seçilen: <span id="sepetAdet">0</span>
+                </span>
+            </div>
+            <button class="sepet-gonder-dugme" id="siparisiGonderDugmesi">
+                Siparişi Onayla <i class="fas fa-check" style="margin-left: 5px;"></i>
+            </button>
+        </div>
+    </section>
+
+    <script>
+        var menuler = {
+            1: { gun: "Pazartesi", ana: [{ img: "KellePaca.jpg", ad: "Kellepaça Çorbası", not: "Sabahtan hazır" }, { img: "mercimekCorbası.png", ad: "Mercimek Çorbası", not: "" }, { img: "KuruFasulye.png", ad: "Kuru Fasulye", not: "Kemik suyuyla" }, { img: "izmirkofte.png", ad: "İzmir Köfte", not: "Fırından" }, { img: "tavuksote.png", ad: "Tavuk Sote", not: "" }], yan: [{ img: "pirincpilavı.png", ad: "Pirinç Pilavı", not: "" }, { img: "domateslimakarna.png", ad: "Domatesli Makarna", not: "" }, { img: "salata.png", ad: "Salata", not: "" }, { img: "cacik.png", ad: "Cacık", not: "" }], tatli: [{ img: "baklava.png", ad: "Ev Baklavası", not: "Cevizli" }, { img: "fırınsutlac.png", ad: "Fırın Sütlaç", not: "" }] },
+            2: { gun: "Salı", ana: [{ img: "KellePaca.jpg", ad: "Kellepaça Çorbası", not: "" }, { img: "yayla_corbasi.jpg", ad: "Yayla Çorbası", not: "Naneli" }, { img: "KuruFasulye.png", ad: "Kuru Fasulye", not: "" }, { img: "patates_kapama.jpg", ad: "Patates Kapama", not: "Etli" }, { img: "firin_tavuk.jpg", ad: "Fırın Tavuk", not: "" }, { img: "taze_fasulye.jpg", ad: "Taze Fasulye", not: "Zeytinyağlı" }], yan: [{ img: "kesme_makarna.jpg", ad: "Kesme Makarna", not: "Ev yapımı" }, { img: "pirincpilavı.png", ad: "Pirinç Pilavı", not: "" }, { img: "salata.png", ad: "Salata", not: "" }, { img: "cacik.png", ad: "Cacık", not: "" }, { img: "borek.jpg", ad: "Börek", not: "" }], tatli: [{ img: "baklava.png", ad: "Ev Baklavası", not: "" }, { img: "hayrabolu.png", ad: "Hayrabolu", not: "" }, { img: "soguk_kadayif.jpg", ad: "Soğuk Kadayıf", not: "" }, { img: "fırınsutlac.png", ad: "Fırın Sütlaç", not: "" }, { img: "magnolya.jpg", ad: "Magnolya", not: "" }, { img: "pasta.jpg", ad: "Pasta", not: "" }] },
+            3: { gun: "Çarşamba", ana: [{ img: "KellePaca.jpg", ad: "Kelle Paça", not: "" }, { img: "ezogelin_corbasi.jpg", ad: "Ezogelin Çorbası", not: "" }, { img: "nohut.jpg", ad: "Etli Nohut", not: "" }, { img: "kadinbudu_kofte.jpg", ad: "Kadın Budu Köfte", not: "" }, { img: "tavuk_yahni.jpg", ad: "Tavuk Yahni", not: "" }, { img: "ispanak.jpg", ad: "Ispanak", not: "Yoğurtlu" }], yan: [{ img: "pirincpilavı.png", ad: "Pirinç Pilavı", not: "" }, { img: "bulgur_pilavi.jpg", ad: "Bulgur Pilavı", not: "" }, { img: "salata.png", ad: "Salata", not: "" }, { img: "cacik.png", ad: "Cacık", not: "" }, { img: "borek.jpg", ad: "Börek", not: "" }], tatli: [{ img: "baklava.png", ad: "Ev Baklavası", not: "" }, { img: "soguk_kadayif.jpg", ad: "Soğuk Kadayıf", not: "" }, { img: "hayrabolu.png", ad: "Hayrabolu", not: "" }, { img: "magnolya.jpg", ad: "Magnolya", not: "" }, { img: "fırınsutlac.png", ad: "Fırın Sütlaç", not: "" }, { img: "pasta.jpg", ad: "Pasta", not: "" }] },
+            4: { gun: "Perşembe", ana: [{ img: "KellePaca.jpg", ad: "Kellepaça Çorbası", not: "" }, { img: "mercimekCorbası.png", ad: "Mercimek Çorbası", not: "" }, { img: "KuruFasulye.png", ad: "Kuru Fasulye", not: "" }, { img: "karniyarik.jpg", ad: "Karnıyarık", not: "Fırından" }, { img: "tavuk_cigeri.jpg", ad: "Tavuk Ciğeri", not: "" }, { img: "mantar_sote.jpg", ad: "Mantar Sote", not: "" }], yan: [{ img: "firin_makarna.jpg", ad: "Fırın Makarna", not: "Beşamelli" }, { img: "pirincpilavı.png", ad: "Pirinç Pilavı", not: "" }, { img: "salata.png", ad: "Salata", not: "" }, { img: "cacik.png", ad: "Cacık", not: "" }, { img: "borek.jpg", ad: "Börek", not: "" }], tatli: [{ img: "baklava.png", ad: "Ev Baklavası", not: "" }, { img: "hayrabolu.png", ad: "Hayrabolu", not: "" }, { img: "fırınsutlac.png", ad: "Fırın Sütlaç", not: "" }, { img: "magnolya.jpg", ad: "Magnolya", not: "" }, { img: "pasta.jpg", ad: "Pasta", not: "" }] },
+            5: { gun: "Cuma", ana: [{ img: "KellePaca.jpg", ad: "Kellepaça Çorbası", not: "" }, { img: "domates_corbasi.png", ad: "Domates Çorbası", not: "" }, { img: "mercimekCorbası.png", ad: "Mercimek Çorbası", not: "" }, { img: "nohut.jpg", ad: "Nohut", not: "" }, { img: "tas_kebabi.png", ad: "Tas Kebabı", not: "" }, { img: "firin_tavuk.jpg", ad: "Fırın Tavuk", not: "" }, { img: "mucver.png", ad: "Mücver", not: "" }], yan: [{ img: "bulgur_pilavi.jpg", ad: "Bulgur Pilavı", not: "" }, { img: "pirincpilavı.png", ad: "Pirinç Pilavı", not: "" }, { img: "salata.png", ad: "Salata", not: "" }, { img: "cacik.png", ad: "Cacık", not: "" }, { img: "borek.jpg", ad: "Börek", not: "" }, { img: "yaprakSarma.png", ad: "Yaprak Sarma", not: "" }], tatli: [{ img: "baklava.png", ad: "Ev Baklavası", not: "" }, { img: "hayrabolu.png", ad: "Hayrabolu", not: "" }, { img: "magnolya.jpg", ad: "Magnolya", not: "" }, { img: "pasta.jpg", ad: "Pasta", not: "" }] },
+            6: { gun: "Cumartesi", ana: [{ img: "KellePaca.jpg", ad: "Kellepaça Çorbası", not: "" }, { img: "mercimekCorbası.png", ad: "Mercimek Çorbası", not: "" }, { img: "KuruFasulye.png", ad: "Kuru Fasulye", not: "" }, { img: "Arnavut_cigeri.png", ad: "Arnavut Ciğeri", not: "" }, { img: "Tavuk_kapama.jpg", ad: "Tavuk Kapama", not: "" }], yan: [{ img: "pirincpilavı.png", ad: "Pirinç Pilavı", not: "" }, { img: "salata.png", ad: "Salata", not: "" }, { img: "cacik.png", ad: "Cacık", not: "" }, { img: "borek.jpg", ad: "Börek", not: "" }, { img: "yaprakSarma.png", ad: "Yaprak Sarma", not: "" }], tatli: [{ img: "hayrabolu.png", ad: "Hayrabolu", not: "" }, { img: "magnolya.jpg", ad: "Magnolya", not: "" }, { img: "pasta.jpg", ad: "Pasta", not: "" }] }
+        };
+
+        var icecekler = [
+            { img: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?q=80&w=200&auto=format&fit=crop", ad: "Kola", not: "Kutu 330ml" },
+            { img: "https://images.unsplash.com/photo-1624517452488-04869289c4ca?q=80&w=200&auto=format&fit=crop", ad: "Fanta", not: "Kutu 330ml" },
+            { img: "https://images.unsplash.com/photo-1550583724-b2692b85b150?w=200&auto=format&fit=crop", ad: "Ayran", not: "Şişe 200ml" },
+            { img: "https://images.unsplash.com/photo-1625772299848-391b6a87d7b3?q=80&w=200&auto=format&fit=crop", ad: "Soda", not: "Cam Şişe" },
+            { img: "https://images.unsplash.com/photo-1523362628745-0c100150b504?w=200&auto=format&fit=crop", ad: "Su", not: "Pet Şişe" }
+        ];
+
+        var sepet = {};
+        var musteriAd = "";
+        var masaNo = "";
+        var kisiSayisi = "";
+
+        function makeId(ad) {
+            return "ürün-" + ad.replace(/[^a-zA-Z0-9]/g, '');
+        }
+
+        document.getElementById("qrGirisFormu").addEventListener("submit", function (e) {
+            e.preventDefault();
+            musteriAd = document.getElementById("musteriAd").value.trim();
+            masaNo = document.getElementById("masaNo").value.trim();
+            kisiSayisi = document.getElementById("kisiSayisi").value.trim();
+
+            if (musteriAd && masaNo && kisiSayisi) {
+                document.getElementById("girisEkrani").style.display = "none";
+                document.getElementById("siparisEkrani").style.display = "block";
+                document.getElementById("kullaniciBilgiAlani").innerText = "Masa " + masaNo + " (" + kisiSayisi + " Kişi) - " + musteriAd;
+                menuyuYukle();
+            }
+        });
+
+        function menuyuYukle() {
+            var bugun = new Date().getDay();
+            // Pazar günü (0) için kapalı göstermek istiyorsan böyle kalabilir,
+            // veya test etmek istersen bugun değerini manuel olarak 1 (Pazartesi) yapabilirsin: var bugun = 1;
+
+            var kutu = document.getElementById("qrMenuIcerik");
+            var menu = menuler[bugun];
+
+            if (!menu) {
+                kutu.innerHTML = '<div style="text-align:center; padding:40px; background:var(--kart-arkaplan); border-radius:10px;"><p style="font-size:1.1rem;">Bugün dükkanımız kapalıdır. Sipariş alamıyoruz.</p></div>';
+                return;
+            }
+
+            var html = "";
+            html += bolumOlustur("Ana Yemekler & Çorbalar", menu.ana);
+            html += bolumOlustur("Yanında & Tamamlayıcılar", menu.yan);
+            html += bolumOlustur("Tatlılar", menu.tatli);
+            html += bolumOlustur("İçecekler", icecekler);
+            kutu.innerHTML = html;
+
+            var azaltButonlar = document.querySelectorAll('.azalt');
+            var arttirButonlar = document.querySelectorAll('.arttir');
+
+            azaltButonlar.forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    var ad = this.getAttribute('data-ad');
+                    var targetId = makeId(ad);
+                    var miktar = sepet[ad] || 0;
+
+                    if (miktar > 0) {
+                        miktar--;
+                        if (miktar === 0) {
+                            delete sepet[ad];
+                        } else {
+                            sepet[ad] = miktar;
+                        }
+                        document.getElementById(targetId).innerText = miktar;
+                        sepetGuncelle();
+                    }
+                });
+            });
+
+            arttirButonlar.forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    var ad = this.getAttribute('data-ad');
+                    var targetId = makeId(ad);
+                    var miktar = sepet[ad] || 0;
+
+                    miktar++;
+                    sepet[ad] = miktar;
+                    document.getElementById(targetId).innerText = miktar;
+                    sepetGuncelle();
+                });
+            });
+        }
+
+        function bolumOlustur(baslik, ogeler) {
+            if (!ogeler || ogeler.length === 0) return "";
+            var b = '<div class="kategori-kart">';
+            b += '<h3 class="kategori-baslik">' + baslik + '</h3>';
+
+            for (var i = 0; i < ogeler.length; i++) {
+                var oge = ogeler[i];
+                var imgSrc = oge.img.startsWith('http') ? oge.img : 'fotograflar/' + oge.img;
+                b += '<div class="siparis-oge">';
+                b += '  <div style="display:flex; align-items:center; flex:1;">';
+                b += '      <img src="' + imgSrc + '" alt="' + oge.ad + '" onerror="this.src=\'https://via.placeholder.com/70\'">';
+                b += '      <div class="siparis-oge-bilgi">';
+                b += '          <h4>' + oge.ad + '</h4>';
+                if (oge.not) {
+                    b += '          <p>' + oge.not + '</p>';
+                }
+                b += '      </div>';
+                b += '  </div>';
+                b += '  <div class="miktar-kontrol">';
+                b += '      <button class="miktar-buton azalt" data-ad="' + oge.ad + '">-</button>';
+                b += '      <span class="miktar-deger" id="' + makeId(oge.ad) + '">0</span>';
+                b += '      <button class="miktar-buton arttir" data-ad="' + oge.ad + '">+</button>';
+                b += '  </div>';
+                b += '</div>';
+            }
+            b += '</div>';
+            return b;
+        }
+
+        function sepetGuncelle() {
+            var sepetAlani = document.getElementById("sepetAlani");
+            var toplamAdet = 0;
+            for (var k in sepet) {
+                toplamAdet += sepet[k];
+            }
+
+            document.getElementById("sepetAdet").innerText = toplamAdet;
+
+            if (toplamAdet > 0) {
+                sepetAlani.classList.remove("gizli");
+            } else {
+                sepetAlani.classList.add("gizli");
+            }
+        }
+
+        // --- DEĞİŞTİRİLEN VE EKLENEN KISIM BURASI ---
+        document.getElementById("siparisiGonderDugmesi").addEventListener("click", function () {
+            var adetTeyit = 0;
+            var siparisOzetListe = [];
+            for (var k in sepet) {
+                adetTeyit += sepet[k];
+                siparisOzetListe.push(sepet[k] + "x " + k);
+            }
+
+            if (adetTeyit === 0) return;
+
+            var onay = confirm("Aşağıdaki siparişler mutfağa iletilecektir:\n\n- " + siparisOzetListe.join("\n- ") + "\n\nOnaylıyor musunuz?");
+
+            if (onay) {
+                // 1. Yeni sipariş objesini oluştur
+                var yeniSiparis = {
+                    id: Date.now(), // Siparişe özel benzersiz numara
+                    musteri: musteriAd,
+                    masa: masaNo,
+                    kisi: kisiSayisi,
+                    detaylar: siparisOzetListe,
+                    saat: new Date().toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' })
+                };
+
+                // 2. Tarayıcı hafızasındaki (localStorage) eski siparişleri al
+                var kaydedilmisSiparisler = JSON.parse(localStorage.getItem('mutfakSiparisleri')) || [];
+
+                // 3. Yeni siparişi listeye ekle ve tekrar kaydet
+                kaydedilmisSiparisler.push(yeniSiparis);
+                localStorage.setItem('mutfakSiparisleri', JSON.stringify(kaydedilmisSiparisler));
+
+                alert("Teşekkürler " + musteriAd + ", siparişiniz (Masa " + masaNo + " / " + kisiSayisi + " Kişi) başarıyla alındı ve mutfağa iletildi!");
+
+                // Sepeti ve ekranı sıfırla
+                sepet = {};
+                sepetGuncelle();
+
+                var miktarLabelS = document.querySelectorAll('.miktar-deger');
+                miktarLabelS.forEach(span => {
+                    span.innerText = "0";
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>
